@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request, Response, BackgroundTasks
 # 1. Define the Modal App & Image dependencies
 image = (
     modal.Image.debian_slim()
-    .pip_install("pyairtable", "google-generativeai", "requests", "fastapi")
+    .pip_install("pyairtable", "google-generativeai", "requests", "fastapi", "python-dotenv")
     .add_local_dir("d:\\SatishAIProjects\\05-GoogleMap\\execution", remote_path="/root/execution")
 )
 
