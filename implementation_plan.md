@@ -5,11 +5,11 @@ This plan describes how we will implement email and phone number extraction from
 ## User Review Required
 
 > [!WARNING]
-> You must create two new columns in your Airtable **Leads** table to store this data:
-> 1. **`email`** (Single line text or Email type)
-> 2. **`phone`** (Single line text or Phone number type)
+> You must verify that your Airtable **Leads** table has these columns:
+> 1. **`email`** (Single line text / Email type)
+> 2. **`phone_number`** (Single line text / Phone number type)
 >
-> If you do not add these columns, the Airtable upload script will fail with an invalid column error.
+> If you do not have these columns, the Airtable upload script will fail.
 
 ## Proposed Changes
 
@@ -32,10 +32,10 @@ We will modify the existing workflow execution files to integrate the email and 
 ### Airtable Save & Search Workflows
 
 #### [MODIFY] [airtable_save_leads.py](file:///d:/SatishAIProjects/05-GoogleMap/execution/airtable_save_leads.py)
-- Include `email` and `phone` fields in the record mapping dictionary.
+- Include `email` and `phone` fields (mapped to `phone_number` column in Airtable) in the record mapping dictionary.
 
 #### [MODIFY] [airtable_search_leads.py](file:///d:/SatishAIProjects/05-GoogleMap/execution/airtable_search_leads.py)
-- Return `email` and `phone` in the returned search result dictionaries.
+- Return `email` and `phone` (from `phone_number` column in Airtable) in the returned search result dictionaries.
 
 ---
 

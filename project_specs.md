@@ -34,7 +34,7 @@ The system has exactly three core workflows:
    - **Input**: List of lead dicts (from `scrape_google_maps`).
    - **Logic**:
      - Authenticate with Airtable.
-     - Map lead fields to Airtable table columns exactly (`name`, `service`, `address`, `website`, `rating`, `email`, `phone`, `date_created`, `status`).
+     - Map lead fields to Airtable table columns: `name`, `service`, `address`, `website`, `rating`, `email`, `phone_number` (holds the extracted phone), `date_created`, `status`.
      - Insert/save each lead into the Airtable base/table.
    - **Output**: Success status indicating the number of leads successfully saved.
 
