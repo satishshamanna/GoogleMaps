@@ -29,6 +29,8 @@ def airtable_save_leads(leads: list) -> int:
             "address": lead.get("address"),
             "website": lead.get("website"),
             "rating": lead.get("rating"),
+            "email": lead.get("email"),
+            "phone_number": lead.get("phone"),
             "date_created": lead.get("date_created"),
             "status": lead.get("status", "lead")
         }

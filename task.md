@@ -1,6 +1,6 @@
-- [x] Create scrape_google_maps workflow instructions and execution scripts
-- [x] Test Google Maps scraper locally (2 coffee shops in Toronto, save to CSV)
-- [x] Implement airtable_save_leads workflow
-- [x] Implement airtable_search_leads workflow
-- [x] Implement chatbot.py on Modal
-- [x] Deploy and verify the full system
+- [x] Implement email and phone number extraction logic in scrape_google_maps.py
+- [x] Update airtable_save_leads.py mapping to use email and phone_number
+- [x] Update airtable_search_leads.py retrieval to include email and phone_number
+- [x] Update chatbot.py display formatter and include email/phone in Telegram responses
+- [x] Run local verification scripts (test_scraper.py & test_airtable.py) and confirm results
+- [x] Deploy the updated app to Modal

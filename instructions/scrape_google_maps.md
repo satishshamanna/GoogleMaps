@@ -13,12 +13,15 @@ This workflow searches Google Maps for a specific service in a specified city, e
      - `formatted_address` (used as `address`)
      - `website` (if available)
      - `rating` (if available)
+   - If `website` is available, make an HTTP request to its homepage and extract the business email and phone number using regular expressions.
 4. **Build Lead Records**: Construct a structured lead dictionary for each candidate with the following fields:
    - `name`: Business name (string)
    - `service`: The service searched for (string)
    - `address`: Full address (string)
    - `website`: Website URL (string or `None` if not available)
    - `rating`: Rating (float or `None` if not available)
+   - `email`: Extracted email address (string or `None` if not found)
+   - `phone`: Extracted phone number (string or `None` if not found)
    - `date_created`: Date scraped in ISO 8601 format (`YYYY-MM-DD`)
    - `status`: Default string `"lead"`
 5. **Enforce Lead Count**: Retrieve and process place details until exactly `count` leads are successfully gathered (or all search results are processed if fewer than `count` exist).

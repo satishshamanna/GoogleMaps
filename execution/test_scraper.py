@@ -11,10 +11,10 @@ def test():
         leads = scrape_google_maps("coffee shop", "Toronto", 2)
         print(f"Scraped {len(leads)} leads:")
         for lead in leads:
-            print(f"- {lead['name']} (Rating: {lead['rating']}, Website: {lead['website']})")
+            print(f"- {lead['name']} (Rating: {lead['rating']}, Website: {lead['website']}, Email: {lead['email']}, Phone: {lead['phone']})")
         
         csv_file = ".tmp/leads.csv"
-        fields = ["name", "service", "address", "website", "rating", "date_created", "status"]
+        fields = ["name", "service", "address", "website", "rating", "email", "phone", "date_created", "status"]
         
         with open(csv_file, mode="w", newline="", encoding="utf-8") as file:
             writer = csv.DictWriter(file, fieldnames=fields)

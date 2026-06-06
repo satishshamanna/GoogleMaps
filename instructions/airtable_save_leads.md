@@ -13,6 +13,8 @@ This workflow uploads a list of lead dictionaries into a designated Airtable bas
    - `address`: Full address (string)
    - `website`: Website URL (string or empty/None)
    - `rating`: Rating (float or None)
+   - `email`: Extracted email address (string or None)
+   - `phone_number`: Extracted phone number (string or None)
    - `date_created`: ISO 8601 date string
    - `status`: String (e.g. `"lead"`)
 4. **Batch Upload**:

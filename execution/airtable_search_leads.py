@@ -60,6 +60,8 @@ def airtable_search_leads(city: str = None, service: str = None, minimum_rating:
             "address": fields.get("address"),
             "website": fields.get("website"),
             "rating": fields.get("rating"),
+            "email": fields.get("email"),
+            "phone": fields.get("phone_number"),
             "date_created": fields.get("date_created"),
             "status": fields.get("status")
         })

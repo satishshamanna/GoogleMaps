@@ -23,6 +23,8 @@ def test_airtable():
                 "address": row.get("address"),
                 "website": row.get("website") if row.get("website") else None,
                 "rating": float(rating) if rating else None,
+                "email": row.get("email") if row.get("email") else None,
+                "phone": row.get("phone") if row.get("phone") else None,
                 "date_created": row.get("date_created"),
                 "status": row.get("status", "lead")
             })
@@ -43,7 +45,7 @@ def test_airtable():
         results = airtable_search_leads(city="Toronto", count=5)
         print(f"Found {len(results)} leads in Airtable for Toronto:")
         for res in results:
-            print(f"- {res['name']} (Rating: {res['rating']}, Website: {res['website']}, Status: {res['status']})")
+            print(f"- {res['name']} (Rating: {res['rating']}, Website: {res['website']}, Email: {res['email']}, Phone: {res['phone']}, Status: {res['status']})")
     except Exception as e:
         print(f"Error searching Airtable: {e}")
 

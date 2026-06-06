@@ -111,7 +111,9 @@ def process_webhook_message(text: str, chat_id: int, bot_token: str, gemini_key:
             for idx, lead in enumerate(leads, start=1):
                 rating_str = f"⭐ {lead['rating']}" if lead['rating'] else "No rating"
                 website_str = f"[Website]({lead['website']})" if lead['website'] else "No website"
-                review_text += f"{idx}. *{lead['name']}* ({rating_str})\n   📍 {lead['address']}\n   🔗 {website_str}\n\n"
+                email_str = f"{lead['email']}" if lead['email'] else "No email"
+                phone_str = f"{lead['phone']}" if lead['phone'] else "No phone"
+                review_text += f"{idx}. *{lead['name']}* ({rating_str})\n   📍 {lead['address']}\n   📧 Email: {email_str}\n   📞 Phone: {phone_str}\n   🔗 {website_str}\n\n"
 
             send_telegram_message(bot_token, chat_id, review_text)
 
@@ -141,7 +143,9 @@ def process_webhook_message(text: str, chat_id: int, bot_token: str, gemini_key:
             for idx, lead in enumerate(results, start=1):
                 rating_str = f"⭐ {lead['rating']}" if lead['rating'] else "No rating"
                 website_str = f"[Website]({lead['website']})" if lead['website'] else "No website"
-                response_text += f"{idx}. *{lead['name']}* ({rating_str})\n   📍 {lead['address']}\n   🔗 {website_str}\n\n"
+                email_str = f"{lead['email']}" if lead['email'] else "No email"
+                phone_str = f"{lead['phone']}" if lead['phone'] else "No phone"
+                response_text += f"{idx}. *{lead['name']}* ({rating_str})\n   📍 {lead['address']}\n   📧 Email: {email_str}\n   📞 Phone: {phone_str}\n   🔗 {website_str}\n\n"
 
             send_telegram_message(bot_token, chat_id, response_text)
 
