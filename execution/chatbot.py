@@ -2,12 +2,13 @@ import os
 import requests
 import json
 import modal
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, BackgroundTasks
 
 # 1. Define the Modal App & Image dependencies
 image = (
     modal.Image.debian_slim()
     .pip_install("pyairtable", "google-generativeai", "requests")
+    .add_local_dir("d:\\SatishAIProjects\\05-GoogleMap\\execution", remote_path="/root/execution")
 )
 
 app = modal.App(name="googlemaps-chatbot", image=image)
@@ -78,26 +79,9 @@ def parse_query_with_gemini(query: str, api_key: str) -> dict:
         print(f"Error calling Gemini: {e}")
         return {"intent": "unknown", "message": "Failed to parse query using Gemini."}
 
-# 4. Webhook entry point
-@web_app.post("/webhook")
-async def telegram_webhook(request: Request):
-    bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
-    gemini_key = os.getenv("GEMINI_API_KEY")
-
-    try:
-        body = await request.json()
-    except Exception:
-        return Response(status_code=400)
-
-    # Check for text message
-    message = body.get("message", {})
-    chat_id = message.get("chat", {}).get("id")
-    text = message.get("text")
-
-    if not chat_id or not text:
-        return Response(status_code=200)
-
-    # 1. Parse using Gemini
+# 4. Background task worker to process workflows
+def process_webhook_message(text: str, chat_id: int, bot_token: str, gemini_key: str):
+    # Parse using Gemini
     parsed = parse_query_with_gemini(text, gemini_key)
     intent = parsed.get("intent")
 
@@ -117,7 +101,7 @@ async def telegram_webhook(request: Request):
             leads = scrape_google_maps(service, city, count)
             if not leads:
                 send_telegram_message(bot_token, chat_id, "⚠️ No leads found matching that search on Google Maps.")
-                return Response(status_code=200)
+                return
 
             # Run Save to Airtable
             saved_count = airtable_save_leads(leads)
@@ -151,7 +135,7 @@ async def telegram_webhook(request: Request):
             results = airtable_search_leads(city=city, service=service, minimum_rating=min_rating, status=status, count=count)
             if not results:
                 send_telegram_message(bot_token, chat_id, "⚠️ No matching leads found in Airtable.")
-                return Response(status_code=200)
+                return
 
             response_text = f"🔍 *Found {len(results)} matching leads in Airtable*:\n\n"
             for idx, lead in enumerate(results, start=1):
@@ -169,14 +153,33 @@ async def telegram_webhook(request: Request):
         clarification = parsed.get("message", "I'm sorry, I didn't quite understand that. Try asking something like: 'Find 5 plumbers in Miami' or 'Search for plumbers in Miami with minimum rating 4'.")
         send_telegram_message(bot_token, chat_id, clarification)
 
+# 5. Webhook entry point
+@web_app.post("/webhook")
+async def telegram_webhook(request: Request, background_tasks: BackgroundTasks):
+    bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    gemini_key = os.getenv("GEMINI_API_KEY")
+
+    try:
+        body = await request.json()
+    except Exception:
+        return Response(status_code=400)
+
+    # Check for text message
+    message = body.get("message", {})
+    chat_id = message.get("chat", {}).get("id")
+    text = message.get("text")
+
+    if not chat_id or not text:
+        return Response(status_code=200)
+
+    # Hand off execution to background task to avoid Telegram webhook read timeouts
+    background_tasks.add_task(process_webhook_message, text, chat_id, bot_token, gemini_key)
+
     return Response(status_code=200)
 
-# 5. Bind the web application & secrets to the Modal App
+# 6. Bind the web application & secrets to the Modal App
 @app.function(
-    secrets=[modal.Secret.from_name("googlemaps-secrets")],
-    mounts=[
-        modal.Mount.from_local_dir("d:\\SatishAIProjects\\05-GoogleMap\\execution", remote_path="/root/execution"),
-    ]
+    secrets=[modal.Secret.from_name("googlemaps-secrets")]
 )
 @modal.asgi_app()
 def fastapi_app():
