@@ -34,7 +34,7 @@ Here is a summary of the implementation details, verification steps, and active 
 The end-to-end flow was verified successfully!
 
 ### Test Case: "Find 5 plumbers in Miami"
-1. **Telegram Request**: Sent `"Find 5 plumbers in Miami"` to the bot chat at [t.me/googlemaps_leads_bot](https://t.me/googlemaps_leads_bot).
+1. **Telegram Request**: Sent `"Find 5 plumbers in Miami"` to the bot chat at [t.me/SS_Googlemaps_leads_bot](https://t.me/SS_Googlemaps_leads_bot).
 2. **Instant Status Response**: Bot immediately replied:
    > 🔍 **Scraping Google Maps** for 5 'plumber' leads in Miami...
 3. **Execution**: Scraped 5 leads and stored them to Airtable.

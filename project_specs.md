@@ -56,6 +56,8 @@ The system has exactly three core workflows:
 
 ## Tools & Integrations
 * **Telegram Bot API**: For receiving user commands and sending chatbot replies.
+  - **Bot Name**: `Maps Lead Gen Bot`
+  - **Bot Username**: `@SS_Googlemaps_leads_bot`
 * **Gemini API**: For natural language understanding to parse user intent, service, city, count, and minimum rating.
 * **Google Maps Places API**: For scraping local business leads.
 * **Airtable API**: For storing and searching lead records.
