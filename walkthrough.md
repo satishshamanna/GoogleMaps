@@ -18,7 +18,8 @@ Here is a summary of the implementation details, verification steps, and active 
 5. **Airtable Verification**:
    - Successfully verified by saving 5 software companies in Whitefield, Bangalore to Airtable.
 6. **Chatbot Webhook**:
-   - Implemented [chatbot.py](file:///d:/SatishAIProjects/05-GoogleMap/execution/chatbot.py) which sets up the Modal app, mounts local code, uses Gemini (`gemini-1.5-flash`) for intent and parameter parsing, and calls the corresponding workflow.
+   - Implemented [chatbot.py](file:///d:/SatishAIProjects/05-GoogleMap/execution/chatbot.py) which sets up the Modal app, mounts local code, uses Gemini (`gemini-3.5-flash`) for intent and parameter parsing, and calls the corresponding workflow.
+   - Implemented async FastAPI `BackgroundTasks` to respond instantly to Telegram webhook requests, preventing read timeout errors.
    - Created [chatbot.md](file:///d:/SatishAIProjects/05-GoogleMap/instructions/chatbot.md) describing the chatbot webhook flow.
 7. **Modal Deployment**:
    - Logged into Modal and created `googlemaps-secrets` with all 6 keys.
@@ -28,19 +29,32 @@ Here is a summary of the implementation details, verification steps, and active 
 
 ---
 
-## Live Bot Verification
+## Live Verification Results
 
-The bot is live and the webhook is active!
+The end-to-end flow was verified successfully!
 
-### How to test:
-1. Open your Telegram app and open the chat with your bot: [t.me/googlemaps_leads_bot](https://t.me/googlemaps_leads_bot) (or your chosen bot username).
-2. Send:
-   `Find 5 plumbers in Miami`
-3. **Expected behavior**:
-   * The bot will reply: `Scraping Google Maps for 5 'plumber' leads in Miami...`
-   * The bot will save the 5 leads to your Airtable table.
-   * The bot will reply with a detailed review of the top results (Names, Ratings, Addresses, and Websites).
-4. Send a search request to verify Airtable retrieval:
-   `Search for software companies in Whitefield with minimum rating 4.5`
-5. **Expected behavior**:
-   * The bot will query Airtable and list the top results matching your criteria (e.g. the 5 software companies we uploaded during local testing).
+### Test Case: "Find 5 plumbers in Miami"
+1. **Telegram Request**: Sent `"Find 5 plumbers in Miami"` to the bot chat at [t.me/googlemaps_leads_bot](https://t.me/googlemaps_leads_bot).
+2. **Instant Status Response**: Bot immediately replied:
+   > 🔍 **Scraping Google Maps** for 5 'plumber' leads in Miami...
+3. **Execution**: Scraped 5 leads and stored them to Airtable.
+4. **Final Response**: Bot reviewed the top results and confirmed completion on Telegram:
+   > ✅ **Successfully saved 5 leads to Airtable!**
+   > 
+   > Here is a review of the top results:
+   > 1. **Miami 305 Plumbing** (⭐ 5.0)
+   >    📍 11025 SW 56th St, Miami, FL 33165, USA
+   >    🔗 [Website](https://miami305plumbing.com/)
+   > 2. **Miami Dade Plumbing** (⭐ 4.9)
+   >    📍 9417 SW 77th Ct, Miami, FL 33156, USA
+   >    🔗 [Website](https://miami-dade-plumbing.com/)
+   > 3. **Miami 24/7 Plumbing - Miami Emergency Plumbers** (⭐ 4.9)
+   >    📍 1331 SW 32nd Ave #4, Miami, FL 33145, USA
+   >    🔗 [Website](https://www.miami247plumbing.com/)
+   > 4. **Sunny Bliss Plumbing & Air** (⭐ 4.9)
+   >    📍 605 Lincoln Rd Suite 250B, Miami Beach, FL 33139, USA
+   >    🔗 [Website](https://sunnybliss.com/)
+   > 5. **Roto-Rooter Plumbing & Water Cleanup** (⭐ 4.7)
+   >    📍 1726 NW 36th St Unit 3, Miami, FL 33142, USA
+   >    🔗 [Website](https://www.rotorooter.com/miami/?...)
+5. **Airtable Status**: Verified that all 5 leads were correctly inserted with their respective `name`, `service`, `address`, `website`, `rating`, `date_created`, and `status`.
