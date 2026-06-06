@@ -1,0 +1,6 @@
+- [x] Create scrape_google_maps workflow instructions and execution scripts
+- [x] Test Google Maps scraper locally (2 coffee shops in Toronto, save to CSV)
+- [x] Implement airtable_save_leads workflow
+- [x] Implement airtable_search_leads workflow
+- [x] Implement chatbot.py on Modal
+- [x] Deploy and verify the full system
