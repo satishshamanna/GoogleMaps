@@ -17,11 +17,7 @@ The system has exactly three core workflows:
      - Formulate a text search query: `"{service} in {city}"`.
      - Query Google Maps Places API (using the text search endpoint).
      - Retrieve `place_id` for the top results.
-     - For each place, call the Places Details API to fetch:
-       - `name`
-       - `formatted_address` (used as `address`)
-       - `website` (if available)
-       - `rating` (if available)
+     - For each place, call the Places Details API to fetch details, and if a website is available, fetch the website homepage to extract the business email and phone number.
      - Limit/slice the results to return exactly `count` leads.
    - **Output**: A list of lead dictionaries. Each lead must contain:
      - `name` (string)
@@ -29,6 +25,8 @@ The system has exactly three core workflows:
      - `address` (string)
      - `website` (string or `None`)
      - `rating` (float or `None`)
+     - `email` (string or `None`)
+     - `phone` (string or `None`)
      - `date_created` (ISO 8601 date string, e.g., `"2026-06-06"`)
      - `status` (string, defaults to `"lead"`)
 
@@ -36,7 +34,7 @@ The system has exactly three core workflows:
    - **Input**: List of lead dicts (from `scrape_google_maps`).
    - **Logic**:
      - Authenticate with Airtable.
-     - Map lead fields to Airtable table columns exactly (`name`, `service`, `address`, `website`, `rating`, `date_created`, `status`).
+     - Map lead fields to Airtable table columns exactly (`name`, `service`, `address`, `website`, `rating`, `email`, `phone`, `date_created`, `status`).
      - Insert/save each lead into the Airtable base/table.
    - **Output**: Success status indicating the number of leads successfully saved.
 
