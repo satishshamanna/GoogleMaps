@@ -32,7 +32,7 @@ def send_telegram_message(token: str, chat_id: int, text: str):
 def parse_query_with_gemini(query: str, api_key: str) -> dict:
     import google.generativeai as genai
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-3.5-flash")
     
     prompt = f"""
     You are an intent parser for a Lead Generation Bot. The user can ask two types of queries:
