@@ -26,6 +26,7 @@ Here is a summary of the implementation details, verification steps, and active 
    - Successfully verified by saving leads to Airtable and checking that email and phone_number columns were correctly populated and retrieved.
 6. **Chatbot Webhook**:
    - Implemented [chatbot.py](file:///d:/SatishAIProjects/05-GoogleMap/execution/chatbot.py) which sets up the Modal app, mounts local code, uses Gemini (`gemini-3.5-flash`) for intent and parameter parsing, and calls the corresponding workflow.
+   - Migrated from the deprecated `google-generativeai` library to the new, modern `google-genai` SDK in [chatbot.py](file:///d:/SatishAIProjects/05-GoogleMap/execution/chatbot.py) and verified functionality.
    - Implemented async FastAPI `BackgroundTasks` to respond instantly to Telegram webhook requests, preventing read timeout errors.
    - Updated response formatting in [chatbot.py](file:///d:/SatishAIProjects/05-GoogleMap/execution/chatbot.py) to show extracted email and phone numbers in the Telegram message.
    - Created [chatbot.md](file:///d:/SatishAIProjects/05-GoogleMap/instructions/chatbot.md) describing the chatbot webhook flow.
