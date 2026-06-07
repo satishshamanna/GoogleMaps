@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request, Response, BackgroundTasks
 # 1. Define the Modal App & Image dependencies
 image = (
     modal.Image.debian_slim()
-    .pip_install("pyairtable", "google-generativeai", "requests", "fastapi", "python-dotenv")
+    .pip_install("pyairtable", "google-genai", "requests", "fastapi", "python-dotenv")
     .add_local_dir("d:\\SatishAIProjects\\05-GoogleMap\\execution", remote_path="/root/execution")
 )
 
@@ -30,9 +30,10 @@ def send_telegram_message(token: str, chat_id: int, text: str):
 
 # 3. Helper to parse intent using Gemini
 def parse_query_with_gemini(query: str, api_key: str) -> dict:
-    import google.generativeai as genai
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-3.5-flash")
+    from google import genai
+    from google.genai import types
+    
+    client = genai.Client(api_key=api_key)
     
     prompt = f"""
     You are an intent parser for a Lead Generation Bot. The user can ask two types of queries:
@@ -70,9 +71,12 @@ def parse_query_with_gemini(query: str, api_key: str) -> dict:
     """
     
     try:
-        response = model.generate_content(
-            prompt,
-            generation_config={"response_mime_type": "application/json"}
+        response = client.models.generate_content(
+            model="gemini-3.5-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+            )
         )
         return json.loads(response.text)
     except Exception as e:
